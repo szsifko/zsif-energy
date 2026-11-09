@@ -64,7 +64,7 @@ The release is a self-contained single-file binary, no .NET runtime is needed in
 
 ### 1. Create the LXC (once)
 
-In Proxmox: Create CT with the Debian 12 template, unprivileged, 1 core, 512 MB RAM, 4 GB disk, network in the same LAN as Home Assistant. Enable *Start at boot*.
+In Proxmox: Create CT with the Debian 12 template, unprivileged, 1 core, 256 MB RAM (the worker uses about 75 MB), 4 GB disk, network in the same LAN as Home Assistant. Enable *Start at boot*.
 
 ### 2. Build the release (Windows)
 
