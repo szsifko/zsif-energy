@@ -1,0 +1,20 @@
+[Unit]
+Description=zsif-energy grid meter worker (Netz Burgenland portal to MQTT)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=notify
+User=zsif-energy
+Group=zsif-energy
+WorkingDirectory=/opt/zsif-energy
+ExecStart=/opt/zsif-energy/Zsif.Energy.Worker
+EnvironmentFile=/etc/zsif-energy/zsif-energy.env
+Environment=DOTNET_ENVIRONMENT=Production
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=30
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

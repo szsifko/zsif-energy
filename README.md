@@ -58,11 +58,57 @@ dotnet test
 dotnet run --project src/Zsif.Energy.Worker
 ```
 
-The worker supports systemd (`Microsoft.Extensions.Hosting.Systemd`) for running as a service on Linux.
+## Deployment (Debian LXC on Proxmox)
+
+The release is a self-contained single-file binary, no .NET runtime is needed in the container.
+
+### 1. Create the LXC (once)
+
+In Proxmox: Create CT with the Debian 12 template, unprivileged, 1 core, 512 MB RAM, 4 GB disk, network in the same LAN as Home Assistant. Enable *Start at boot*.
+
+### 2. Build the release (Windows)
+
+```powershell
+./scripts/publish-linux.ps1
+```
+
+Creates `artifacts/zsif-energy-linux-x64.tar.gz` (binary, systemd unit, env template, install script).
+
+### 3. Copy it into the container
+
+Via the Proxmox host (`<ctid>` = container ID):
+
+```bash
+scp artifacts/zsif-energy-linux-x64.tar.gz root@<proxmox-host>:/tmp/
+pct push <ctid> /tmp/zsif-energy-linux-x64.tar.gz /root/zsif-energy-linux-x64.tar.gz
+pct enter <ctid>
+```
+
+### 4. Install (inside the container, as root)
+
+```bash
+cd /root
+tar -xzf zsif-energy-linux-x64.tar.gz
+bash zsif-energy-linux-x64/install.sh
+```
+
+On the first install the script creates `/etc/zsif-energy/zsif-energy.env` (root only) and stops. Fill in the credentials there, then:
+
+```bash
+systemctl start zsif-energy
+journalctl -u zsif-energy -f
+```
+
+The service runs as user `zsif-energy`, starts on boot and restarts on failure.
+
+### Update
+
+Build and copy a new release as above, then run `bash zsif-energy-linux-x64/install.sh` again. The env file is kept.
 
 ## Roadmap
 
 - [x] Portal API and energy calculation
 - [x] MQTT publishing with Home Assistant discovery
 - [ ] House consumption via Fronius Solar API
-- [ ] Deployment to a Debian LXC as systemd service
+- [x] Deployment files for a Debian LXC as systemd service
+- [ ] First deployment and check in Home Assistant
