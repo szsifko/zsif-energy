@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Bezug",
+    "data": [
+      {"startTimestamp":"2026-11-08T00:00:00+01:00","endTimestamp":"2026-11-08T00:15:00+01:00","value":0.09200000000419095,"reading":39044.181000000004,"powerValue":null,"price":null,"emission":null,"status":"W","readingStatus":null},
+      {"startTimestamp":"2026-11-08T00:15:00+01:00","endTimestamp":"2026-11-08T00:30:00+01:00","value":0.07300000000395812,"reading":39044.254,"powerValue":null,"price":null,"emission":null,"status":"W","readingStatus":null},
+      {"startTimestamp":"2026-11-08T00:30:00+01:00","endTimestamp":"2026-11-08T00:45:00+01:00","value":null,"reading":null,"powerValue":null,"price":null,"emission":null,"status":null,"readingStatus":null}
+    ]
+  }
+]
